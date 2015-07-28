@@ -1,0 +1,53 @@
+{
+	"target_growth_rate": [1, 1],
+	"transition_mode_probability": {
+		"sensitive": [0.5, 0.5],
+		"resistant": [0.5, 0.5]
+	},
+	"transition_rates": {
+		"sensitive": {
+			"free_viral": [0.1, 0.4],
+			"cell_to_cell": [0.1, 0.1]
+		},
+		"resistant": {
+			"free_viral": [0.1, 0.1],
+			"cell_to_cell": [0.1, 0.1]
+		}
+	},
+	"antibody_effectivity": {
+		"sensitive": [0,  0],
+		"resistant": [0,  0]
+	},
+	"mutation_rate": [0.05, 0.05],
+	"death_rate": {
+		"target" : [0.1,  0.1],
+		"sensitive": [0.1,  0.1],
+		"resistant": [0.1,  0.1],
+		"antibody": [0,  0]
+	},
+	"burst_rate": {
+		"sensitive" : [1,  1],
+		"resistant": [1,  1]
+	},
+	"clearance_rate": {
+		"sensitive": [0.1,  0.1],
+		"resistant": [0.1,  0.1]
+	},
+	"antibody_absorption_rate": [0,  0],
+	"antibody_dosage": [1,  1],
+	"explicit_dosage": "True",
+	"dosage_times": [0, 7, 14],
+	"interval_dosage": "False",
+	"dosage_interval": [7, 7],
+	"initial_values": {
+		"target": [5, 5],
+		"sensitive_cells": [1, 1],
+		"resistant_cells": [1, 1],
+		"sensitive_virus": [1, 1],
+		"resistant_virus": [1, 1],
+		"antibodies": [1, 1]
+	},
+
+	"final_time": 1000,
+	"steps": 30
+}
