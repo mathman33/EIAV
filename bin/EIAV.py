@@ -56,7 +56,8 @@ def CONFIG_DESCRIPTIONS_TO_VARIABLES(parameters):
         r"$N_{R}$":       parameters["burst_rate"]["resistant"],
         r"$c_{S}$":       parameters["clearance_rate"]["sensitive"],
         r"$c_{R}$":       parameters["clearance_rate"]["resistant"],
-        r"$q_{S}$":       parameters["antibody_absorption_rate"],
+        r"$q_{S}$":       parameters["antibody_absorption_rate"]["sensitive"],
+        r"$q_{R}$":       parameters["antibody_absorption_rate"]["resistant"],
         r"$T_0$":         parameters["initial_values"]["target"],
         r"$I_{S0}$":      parameters["initial_values"]["sensitive_cells"],
         r"$I_{R0}$":      parameters["initial_values"]["resistant_cells"],
@@ -73,7 +74,8 @@ def plot_time_graphs(save_directory, step, system, text, args):
 
     plt.axes([0.20, 0.1, 0.75, 0.8], axisbg="white", frameon=True)
 
-    limit = 1.1*max([max(system.T), max(system.I_S), max(system.I_R), max(system.V_S), max(system.V_R), max(system.A)])
+    limit = 1.1*max(list(system.T) + list(system.I_S) + list(system.I_R) + list(system.V_S) + list(system.V_R) + list(system.A))
+    # limit = 1.1*max([max(system.T), max(system.I_S), max(system.I_R), max(system.V_S), max(system.V_R), max(system.A)])
 
     for index, text_line in enumerate(text):
         plt.text(-.25*system.t_f, limit*(1 - (0.05*index)), text_line)
@@ -126,6 +128,7 @@ class System():
         self.c_S = parameters[r"$c_{S}$"]
         self.c_R = parameters[r"$c_{R}$"]
         self.q_S = parameters[r"$q_{S}$"]
+        self.q_R = parameters[r"$q_{R}$"]
         self.initial_values = [
             parameters[r"$T_0$"],
             parameters[r"$I_{S0}$"],
@@ -158,8 +161,8 @@ class System():
         next[1] = -self.d_S*I_S + T*(self.p_S*(self.beta_FS/(1 + self.nu_S*A))*V_S*(1 - self.mu) + (1 - self.p_S)*self.beta_CS*I_S*(1 - self.mu))
         next[2] = -self.d_R*I_R + T*(self.p_S*(self.beta_FS/(1 + self.nu_S*A))*V_S*self.mu + (1 - self.p_S)*self.beta_CS*I_S*self.mu + self.p_R*(self.beta_FR/(1 + self.nu_R*A))*V_R + (1 - self.p_R)*self.beta_CR*I_R)
         next[3] = self.p_S*self.N_S*self.d_S*I_S - self.c_S*V_S - self.p_S*self.beta_FS*V_S*T - self.q_S*V_S*A
-        next[4] = self.p_R*self.N_R*self.d_R*I_R - self.c_R*V_R - self.p_R*self.beta_FR*V_R*T
-        next[5] = A*(-self.d_A - self.q_S*V_S)
+        next[4] = self.p_R*self.N_R*self.d_R*I_R - self.c_R*V_R - self.p_R*self.beta_FR*V_R*T - self.q_R*V_R*A
+        next[5] = A*(-self.d_A - self.q_S*V_S - self.q_R*V_R)
 
         return next
 
